@@ -3,6 +3,7 @@ import path from 'path';
 import { existsSync } from 'fs';
 import { mkdir } from 'fs/promises';
 import os from 'os';
+import dotenv from 'dotenv';
 import { VERSION } from './version.js';
 import { CONFIG_FILE } from './config.js';
 
@@ -15,6 +16,12 @@ export interface ServerConfig {
   fileReadLineLimit?: number; // Default line limit for file read operations (changed from character-based)
   clientId?: string; // Unique client identifier for analytics
   currentClient?: ClientInfo; // Current connected client information
+  // Remote commander specific config
+  serverUrl?: string; // Base URL for lit-server API
+  authToken?: string; // Keycloak authentication token
+  basePath?: string; // Scope operations to specific path (e.g., /data)
+  username?: string; // Username for authentication
+  password?: string; // Password for authentication
   [key: string]: any; // Allow for arbitrary configuration keys
 }
 
@@ -43,6 +50,13 @@ class ConfigManager {
   async init() {
     if (this.initialized) return;
 
+    // Load environment variables from .env file with absolute path
+    // Calculate path to .env file relative to this source file location
+    const currentDir = path.dirname(new URL(import.meta.url).pathname);
+    const projectRoot = path.resolve(currentDir, '..');
+    const envPath = path.join(projectRoot, '.env');
+    dotenv.config({ path: envPath });
+
     try {
       // Ensure config directory exists
       const configDir = path.dirname(this.configPath);
@@ -61,6 +75,20 @@ class ConfigManager {
         this.config = this.getDefaultConfig();
         await this.saveConfig();
       }
+
+      // Override with environment variables if present
+      if (process.env.REMOTE_COMMANDER_SERVER_URL) {
+        this.config.serverUrl = process.env.REMOTE_COMMANDER_SERVER_URL;
+      }
+      if (process.env.REMOTE_COMMANDER_USERNAME && process.env.REMOTE_COMMANDER_PASSWORD) {
+        // We'll handle auth token generation in the HTTP client
+        this.config.username = process.env.REMOTE_COMMANDER_USERNAME;
+        this.config.password = process.env.REMOTE_COMMANDER_PASSWORD;
+      }
+      if (process.env.REMOTE_COMMANDER_BASE_PATH) {
+        this.config.basePath = process.env.REMOTE_COMMANDER_BASE_PATH;
+      }
+
       this.config['version'] = VERSION;
 
       this.initialized = true;
@@ -133,7 +161,11 @@ class ConfigManager {
       allowedDirectories: [],
       telemetryEnabled: true, // Default to opt-out approach (telemetry on by default)
       fileWriteLineLimit: 50,  // Default line limit for file write operations (changed from 100)
-      fileReadLineLimit: 1000  // Default line limit for file read operations (changed from character-based)
+      fileReadLineLimit: 1000, // Default line limit for file read operations (changed from character-based)
+      // Remote commander defaults
+      serverUrl: "http://localhost:5000",
+      authToken: "", // Must be configured by user
+      basePath: "/data"
     };
   }
 

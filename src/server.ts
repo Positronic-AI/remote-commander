@@ -132,7 +132,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             tools: [
                 // Configuration tools
                 {
-                    name: "get_config",
+                    name: "remote_get_config",
                     description: `
                         Get the complete server configuration as JSON. Config includes fields for:
                         - blockedCommands (array of blocked shell commands)
@@ -149,7 +149,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(GetConfigArgsSchema),
                 },
                 {
-                    name: "set_config_value",
+                    name: "remote_set_config_value",
                     description: `
                         Set a specific configuration value by key.
                         
@@ -173,7 +173,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
                 // Filesystem tools
                 {
-                    name: "read_file",
+                    name: "remote_read_file",
                     description: `
                         Read the contents of a file from the file system or a URL with optional offset and length parameters.
                         
@@ -210,7 +210,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ReadFileArgsSchema),
                 },
                 {
-                    name: "read_multiple_files",
+                    name: "remote_read_multiple_files",
                     description: `
                         Read the contents of multiple files simultaneously.
                         
@@ -226,7 +226,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ReadMultipleFilesArgsSchema),
                 },
                 {
-                    name: "write_file",
+                    name: "remote_write_file",
                     description: `
                         Write or append to file contents. 
 
@@ -259,7 +259,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(WriteFileArgsSchema),
                 },
                 {
-                    name: "create_directory",
+                    name: "remote_create_directory",
                     description: `
                         Create a new directory or ensure a directory exists.
                         
@@ -271,7 +271,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(CreateDirectoryArgsSchema),
                 },
                 {
-                    name: "list_directory",
+                    name: "remote_list_directory",
                     description: `
                         Get a detailed listing of all files and directories in a specified path.
                         
@@ -284,7 +284,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ListDirectoryArgsSchema),
                 },
                 {
-                    name: "move_file",
+                    name: "remote_move_file",
                     description: `
                         Move or rename files and directories.
                         
@@ -296,7 +296,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(MoveFileArgsSchema),
                 },
                 {
-                    name: "search_files",
+                    name: "remote_search_files",
                     description: `
                         Finds files by name using a case-insensitive substring matching.
                         
@@ -311,7 +311,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(SearchFilesArgsSchema),
                 },
                 {
-                    name: "search_code",
+                    name: "remote_search_code",
                     description: `
                         Search for text/code patterns within file contents using ripgrep.
                         
@@ -327,7 +327,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(SearchCodeArgsSchema),
                 },
                 {
-                    name: "get_file_info",
+                    name: "remote_get_file_info",
                     description: `
                         Retrieve detailed metadata about a file or directory including:
                         - size
@@ -349,7 +349,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
                 // Text editing tools
                 {
-                    name: "edit_block",
+                    name: "remote_edit_block",
                     description: `
                         Apply surgical text replacements to files.
                         
@@ -388,7 +388,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                 
                 // Terminal tools
                 {
-                    name: "start_process",
+                    name: "remote_start_process",
                     description: `
                         Start a new terminal process with intelligent state detection.
                         
@@ -443,7 +443,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(StartProcessArgsSchema),
                 },
                 {
-                    name: "read_process_output",
+                    name: "remote_read_process_output",
                     description: `
                         Read output from a running process with intelligent completion detection.
                         
@@ -470,7 +470,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ReadProcessOutputArgsSchema),
                 },
                 {
-                    name: "interact_with_process", 
+                    name: "remote_interact_with_process", 
                     description: `
                         Send input to a running process and automatically receive the response.
                         
@@ -522,7 +522,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(InteractWithProcessArgsSchema),
                 },
                 {
-                    name: "force_terminate",
+                    name: "remote_force_terminate",
                     description: `
                         Force terminate a running terminal session.
                         
@@ -530,7 +530,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ForceTerminateArgsSchema),
                 },
                 {
-                    name: "list_sessions",
+                    name: "remote_list_sessions",
                     description: `
                         List all active terminal sessions.
                         
@@ -548,7 +548,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ListSessionsArgsSchema),
                 },
                 {
-                    name: "list_processes",
+                    name: "remote_list_processes",
                     description: `
                         List all running processes.
                         
@@ -558,7 +558,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(ListProcessesArgsSchema),
                 },
                 {
-                    name: "kill_process",
+                    name: "remote_kill_process",
                     description: `
                         Terminate a running process by PID.
                         
@@ -568,7 +568,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(KillProcessArgsSchema),
                 },
                 {
-                    name: "get_usage_stats",
+                    name: "remote_get_usage_stats",
                     description: `
                         Get usage statistics for debugging and analysis.
                         
@@ -578,7 +578,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     inputSchema: zodToJsonSchema(GetUsageStatsArgsSchema),
                 },
                 {
-                    name: "give_feedback_to_desktop_commander",
+                    name: "remote_give_feedback",
                     description: `
                         Open feedback form in browser to provide feedback about Desktop Commander.
                         
@@ -641,7 +641,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
 
         switch (name) {
             // Config tools
-            case "get_config":
+            case "remote_get_config":
                 try {
                     result = await getConfig();
                 } catch (error) {
@@ -652,7 +652,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                     };
                 }
                 break;
-            case "set_config_value":
+            case "remote_set_config_value":
                 try {
                     result = await setConfigValue(args);
                 } catch (error) {
@@ -664,7 +664,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 }
                 break;
 
-            case "get_usage_stats":
+            case "remote_get_usage_stats":
                 try {
                     result = await getUsageStats();
                 } catch (error) {
@@ -676,7 +676,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 }
                 break;
 
-            case "give_feedback_to_desktop_commander":
+            case "remote_give_feedback":
                 try {
                     result = await giveFeedbackToDesktopCommander(args);
                 } catch (error) {
@@ -689,75 +689,75 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
                 break;
 
             // Terminal tools
-            case "start_process":
+            case "remote_start_process":
                 result = await handlers.handleStartProcess(args);
                 break;
 
-            case "read_process_output":
+            case "remote_read_process_output":
                 result = await handlers.handleReadProcessOutput(args);
                 break;
                 
-            case "interact_with_process":
+            case "remote_interact_with_process":
                 result = await handlers.handleInteractWithProcess(args);
                 break;
 
-            case "force_terminate":
+            case "remote_force_terminate":
                 result = await handlers.handleForceTerminate(args);
                 break;
 
-            case "list_sessions":
+            case "remote_list_sessions":
                 result = await handlers.handleListSessions();
                 break;
 
             // Process tools
-            case "list_processes":
+            case "remote_list_processes":
                 result = await handlers.handleListProcesses();
                 break;
 
-            case "kill_process":
+            case "remote_kill_process":
                 result = await handlers.handleKillProcess(args);
                 break;
 
             // Note: REPL functionality removed in favor of using general terminal commands
 
             // Filesystem tools
-            case "read_file":
+            case "remote_read_file":
                 result = await handlers.handleReadFile(args);
                 break;
 
-            case "read_multiple_files":
+            case "remote_read_multiple_files":
                 result = await handlers.handleReadMultipleFiles(args);
                 break;
 
-            case "write_file":
+            case "remote_write_file":
                 result = await handlers.handleWriteFile(args);
                 break;
 
-            case "create_directory":
+            case "remote_create_directory":
                 result = await handlers.handleCreateDirectory(args);
                 break;
 
-            case "list_directory":
+            case "remote_list_directory":
                 result = await handlers.handleListDirectory(args);
                 break;
 
-            case "move_file":
+            case "remote_move_file":
                 result = await handlers.handleMoveFile(args);
                 break;
 
-            case "search_files":
+            case "remote_search_files":
                 result = await handlers.handleSearchFiles(args);
                 break;
 
-            case "search_code":
+            case "remote_search_code":
                 result = await handlers.handleSearchCode(args);
                 break;
 
-            case "get_file_info":
+            case "remote_get_file_info":
                 result = await handlers.handleGetFileInfo(args);
                 break;
 
-            case "edit_block":
+            case "remote_edit_block":
                 result = await handlers.handleEditBlock(args);
                 break;
 
