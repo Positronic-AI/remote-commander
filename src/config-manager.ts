@@ -18,6 +18,7 @@ export interface ServerConfig {
   currentClient?: ClientInfo; // Current connected client information
   // Remote commander specific config
   serverUrl?: string; // Base URL for lit-server API
+  authUrl?: string; // Keycloak authentication server URL  
   authToken?: string; // Keycloak authentication token
   basePath?: string; // Scope operations to specific path (e.g., /data)
   username?: string; // Username for authentication
@@ -79,6 +80,9 @@ class ConfigManager {
       // Override with environment variables if present
       if (process.env.REMOTE_COMMANDER_SERVER_URL) {
         this.config.serverUrl = process.env.REMOTE_COMMANDER_SERVER_URL;
+      }
+      if (process.env.REMOTE_COMMANDER_AUTH_URL) {
+        this.config.authUrl = process.env.REMOTE_COMMANDER_AUTH_URL;
       }
       if (process.env.REMOTE_COMMANDER_USERNAME && process.env.REMOTE_COMMANDER_PASSWORD) {
         // We'll handle auth token generation in the HTTP client

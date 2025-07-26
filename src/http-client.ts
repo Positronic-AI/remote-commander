@@ -3,6 +3,7 @@ import { configManager } from './config-manager.js';
 
 export interface HttpClientConfig {
   serverUrl: string;
+  authUrl?: string;
   authToken: string;
   basePath: string;
   username?: string;
@@ -82,6 +83,7 @@ export class HttpClient {
 
     this.config = {
       serverUrl: serverConfig.serverUrl,
+      authUrl: serverConfig.authUrl,
       authToken: serverConfig.authToken || '',
       basePath: serverConfig.basePath,
       username: serverConfig.username,
@@ -103,8 +105,9 @@ export class HttpClient {
     }
 
     try {
-      // Keycloak token endpoint - LIT realm with admin-cli client
-      const tokenUrl = `http://localhost:8080/auth/realms/LIT/protocol/openid-connect/token`;
+      // Keycloak token endpoint - LIT realm with lit-api client
+      const authUrl = (await configManager.getConfig()).authUrl || 'http://localhost:8080';
+      const tokenUrl = `${authUrl}/realms/LIT/protocol/openid-connect/token`;
       
       const response = await fetch(tokenUrl, {
         method: 'POST',
